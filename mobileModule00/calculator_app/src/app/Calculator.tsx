@@ -1,28 +1,36 @@
 import React, { useState } from "react";
-// import { BiAdjust } from "react-icons/bi";
 import {
   Text,
   View,
   StyleSheet,
-  Dimensions,
   TouchableOpacity,
+  useWindowDimensions,
 } from "react-native";
 import { evaluate } from "mathjs";
-
-const { width, height } = Dimensions.get("window");
-const isLandscape = width > height;
-
-const MAX_KEYPAD_WIDTH = isLandscape ? Math.min(width * 0.7, 650) : Math.min(width - 32, 500);
-const BUTTON_GAP = isLandscape ? 10 : 12;
-const BUTTON_SIZE = (MAX_KEYPAD_WIDTH - BUTTON_GAP * 3) / 4;
-const KEY_SIZE = isLandscape 
-  ? Math.min(BUTTON_SIZE, (height * 0.6) / 5 - BUTTON_GAP)
-  : Math.min(BUTTON_SIZE, (height * 0.52) / 5 - BUTTON_GAP);
 
 export default function Calculator() {
   const [expression, setExpression] = useState("");
   const [result, setResult] = useState("0");
   const [isCalculated, setIsCalculated] = useState(false);
+
+  const { width, height } = useWindowDimensions();
+  const isLandscape = width > height;
+  const isTablet = Math.min(width, height) >= 600;
+
+  const MAX_KEYPAD_WIDTH = isTablet
+    ? Math.min(width * (isLandscape ? 0.5 : 0.6), 520)
+    : isLandscape
+    ? Math.min(width * 0.7, 500)
+    : Math.min(width - 32, 400);
+
+  const BUTTON_GAP = isTablet ? 14 : isLandscape ? 10 : 12;
+
+  const BUTTON_SIZE = (MAX_KEYPAD_WIDTH - BUTTON_GAP * 3) / 4;
+  const KEY_SIZE = Math.min(
+    BUTTON_SIZE,
+    isLandscape ? (height * 0.6) / 5 - BUTTON_GAP : (height * 0.52) / 5 - BUTTON_GAP,
+    88
+  );
 
   const handlePress = (label: string) => {
 
@@ -161,6 +169,80 @@ export default function Calculator() {
     ],
   ];
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      flexDirection: "column",
+      justifyContent: "flex-end",
+      backgroundColor: "lightyellow",
+      paddingHorizontal: 16,
+      paddingBottom: isLandscape ? 8 : 16,
+    },
+    displayContainer: {
+      flex: 1,
+      justifyContent: "flex-end",
+      alignItems: "flex-end",
+      paddingHorizontal: 8,
+      paddingBottom: isLandscape ? 4 : 12,
+    },
+    historyText: {
+      fontSize: isTablet ? 32 : isLandscape ? 22 : 28,
+      color: "#8C856B",
+      marginBottom: 2,
+    },
+    displayText: {
+      fontSize: isTablet ? 80 : isLandscape ? 56 : 72,
+      fontWeight: "300",
+      color: "#2C2A1E",
+      letterSpacing: -1,
+    },
+    keypadWrapper: {
+      width: "100%",
+      alignItems: "center",
+    },
+    keypad: {
+      width: MAX_KEYPAD_WIDTH,
+      gap: BUTTON_GAP,
+    },
+    row: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      gap: BUTTON_GAP,
+    },
+    button: {
+      width: KEY_SIZE,
+      height: KEY_SIZE,
+      borderRadius: KEY_SIZE / 2,
+      backgroundColor: "#F3ECC8",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    zeroButton: {
+      width: KEY_SIZE * 2 + BUTTON_GAP,
+      alignItems: "flex-start",
+      paddingLeft: KEY_SIZE * 0.38,
+    },
+    functionBtn: {
+      backgroundColor: "#E2D9A7",
+    },
+    operatorBtn: {
+      backgroundColor: "#E59819",
+    },
+    buttonText: {
+      fontSize: Math.max(KEY_SIZE * 0.45, 24),
+      fontWeight: "bold",
+      color: "#2C2A1E",
+    },
+    functionText: {
+      fontWeight: "500",
+      color: "#2C2A1E",
+    },
+    operatorText: {
+      color: "#FFFFFF",
+      fontWeight: "600",
+    },
+  });
+
   return (
     <View style={styles.container}>
       <View style={styles.displayContainer}>
@@ -202,77 +284,3 @@ export default function Calculator() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "flex-end",
-    backgroundColor: "lightyellow",
-    paddingHorizontal: 16,
-    paddingBottom: isLandscape ? 8 : 16,
-  },
-  displayContainer: {
-    flex: 1,
-    justifyContent: "flex-end",
-    alignItems: "flex-end",
-    paddingHorizontal: 8,
-    paddingBottom: isLandscape ? 4 : 12,
-  },
-  historyText: {
-    fontSize: isLandscape ? 22 : 28,
-    color: "#8C856B",
-    marginBottom: 2,
-  },
-  displayText: {
-    fontSize: isLandscape ? 56 : 72,
-    fontWeight: "300",
-    color: "#2C2A1E",
-    letterSpacing: -1,
-  },
-  keypadWrapper: {
-    width: "100%",
-    alignItems: "center",
-  },
-  keypad: {
-    width: MAX_KEYPAD_WIDTH,
-    gap: BUTTON_GAP,
-  },
-  row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    gap: BUTTON_GAP,
-  },
-  button: {
-    width: KEY_SIZE,
-    height: KEY_SIZE,
-    borderRadius: KEY_SIZE / 2,
-    backgroundColor: "#F3ECC8",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  zeroButton: {
-    width: KEY_SIZE * 2 + BUTTON_GAP,
-    alignItems: "flex-start",
-    paddingLeft: KEY_SIZE * 0.38,
-  },
-  functionBtn: {
-    backgroundColor: "#E2D9A7",
-  },
-  operatorBtn: {
-    backgroundColor: "#E59819",
-  },
-  buttonText: {
-    fontSize: Math.max(KEY_SIZE * 0.45, 24),
-    fontWeight: "bold",
-    color: "#2C2A1E",
-  },
-  functionText: {
-    fontWeight: "500",
-    color: "#2C2A1E",
-  },
-  operatorText: {
-    color: "#FFFFFF",
-    fontWeight: "600",
-  },
-});
