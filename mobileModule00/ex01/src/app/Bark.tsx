@@ -9,6 +9,7 @@ export default function Bark() {
 	<View style={styles.container}>
 		<Text style={styles.text}>Would u bark for me <Text style={{color: "rgba(0, 132, 255, 1)", fontStyle: "italic", fontWeight: "bold"}}>Drake</Text><br/>👉🏾👈🏾</Text>
 		<Button title="Press Me" onPress={() => {
+			console.log("Button pressed");
 			router.push("/hellowrld");
 		}} >
 			<Text style={{fontSize: 20, fontWeight: "bold"}}>Click Me</Text>

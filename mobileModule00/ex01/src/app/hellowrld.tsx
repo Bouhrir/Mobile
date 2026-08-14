@@ -8,6 +8,7 @@ export default function HelloWorld() {
     <View style={styles.container}>
 		<Text style={styles.text}>Hello World!</Text>
 		<Button title="Press Me" onPress={() => {
+			console.log("Button pressed");
 			router.push("/Bark");
 		}} >
 			<Text style={{fontSize: 20, fontWeight: "bold"}}>Click Me</Text>
