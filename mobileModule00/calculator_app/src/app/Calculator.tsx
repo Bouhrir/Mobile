@@ -164,8 +164,8 @@ export default function Calculator() {
   return (
     <View style={styles.container}>
       <View style={styles.displayContainer}>
-        <Text style={styles.historyText} numberOfLines={1} adjustsFontSizeToFit>{expression || "0"}</Text>
-        <Text style={styles.displayText} numberOfLines={1} adjustsFontSizeToFit>{result}</Text>
+        <Text style={styles.historyText} adjustsFontSizeToFit>{expression || "0"}</Text>
+        <Text style={styles.displayText} adjustsFontSizeToFit>{result}</Text>
       </View>
 
       <View style={styles.keypadWrapper}>
