@@ -187,7 +187,7 @@ export default function Calculator() {
   paddingBottom: isLandscape ? 4 : 12,
 },
    displayText: {
-//   width: "100%",
+  width: "100%",
 //   height: isTablet ? 100 : isLandscape ? 72 : 88,
   textAlign: "right",
   fontSize: isTablet ? 80 : isLandscape ? 56 : 72,
@@ -196,7 +196,7 @@ export default function Calculator() {
   letterSpacing: -1,
 },
 historyText: {
-//   width: "100%",
+  // width: "100%",
 //   height: isTablet ? 40 : isLandscape ? 28 : 36,
   textAlign: "right",
   fontSize: isTablet ? 32 : isLandscape ? 22 : 28,
@@ -264,7 +264,7 @@ historyText: {
         <Text style={styles.historyText}  adjustsFontSizeToFit >
           {expression || "0"}
         </Text>
-		<Text style={[styles.displayText, { fontSize: getDisplayFontSize(result, isTablet ? 80 : isLandscape ? 56 : 72) }]}
+		<Text style={[styles.displayText, { fontSize: getDisplayFontSize(result, isTablet ? 80 : isLandscape ? 66 : 92) }]}
 				numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.4}>
   			{result}
 		</Text>
