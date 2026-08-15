@@ -179,23 +179,30 @@ export default function Calculator() {
       paddingBottom: isLandscape ? 8 : 16,
     },
     displayContainer: {
-      flex: 1,
-      justifyContent: "flex-end",
-      alignItems: "flex-end",
-      paddingHorizontal: 8,
-      paddingBottom: isLandscape ? 4 : 12,
-    },
-    historyText: {
-      fontSize: isTablet ? 32 : isLandscape ? 22 : 28,
-      color: "#8C856B",
-      marginBottom: 2,
-    },
-    displayText: {
-      fontSize: isTablet ? 80 : isLandscape ? 56 : 72,
-      fontWeight: "300",
-      color: "#2C2A1E",
-      letterSpacing: -1,
-    },
+  flex: 1,
+  width: "100%",
+  justifyContent: "flex-end",
+  alignItems: "flex-end",
+  paddingHorizontal: 8,
+  paddingBottom: isLandscape ? 4 : 12,
+},
+   displayText: {
+//   width: "100%",
+//   height: isTablet ? 100 : isLandscape ? 72 : 88,
+  textAlign: "right",
+  fontSize: isTablet ? 80 : isLandscape ? 56 : 72,
+  fontWeight: "300",
+  color: "#2C2A1E",
+  letterSpacing: -1,
+},
+historyText: {
+//   width: "100%",
+//   height: isTablet ? 40 : isLandscape ? 28 : 36,
+  textAlign: "right",
+  fontSize: isTablet ? 32 : isLandscape ? 22 : 28,
+  color: "#8C856B",
+  marginBottom: 2,
+},
     keypadWrapper: {
       width: "100%",
       alignItems: "center",
@@ -242,12 +249,25 @@ export default function Calculator() {
       fontWeight: "600",
     },
   });
+  const getDisplayFontSize = (text: string, base: number) => {
+  const len = text.length;
+  if (len <= 6) return base;
+  if (len <= 9) return base * 0.75;
+  if (len <= 12) return base * 0.55;
+  if (len <= 16) return base * 0.4;
+  return base * 0.32;
+};
 
   return (
     <View style={styles.container}>
       <View style={styles.displayContainer}>
-        <Text style={styles.historyText} adjustsFontSizeToFit>{expression || "0"}</Text>
-        <Text style={styles.displayText} adjustsFontSizeToFit>{result}</Text>
+        <Text style={styles.historyText}  adjustsFontSizeToFit >
+          {expression || "0"}
+        </Text>
+		<Text style={[styles.displayText, { fontSize: getDisplayFontSize(result, isTablet ? 80 : isLandscape ? 56 : 72) }]}
+				numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.4}>
+  			{result}
+		</Text>
       </View>
 
       <View style={styles.keypadWrapper}>
