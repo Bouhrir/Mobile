@@ -1,20 +1,21 @@
-import { useState } from 'react';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
-import { FaSearch } from "react-icons/fa";
-import { FaLocationArrow } from "react-icons/fa";
+import { Pressable, StyleSheet, TextInput, View } from 'react-native';
+import { FaSearch } from 'react-icons/fa';
+import { FaLocationArrow } from 'react-icons/fa';
 
+type AppBarProps = {
+  query: string;
+  onLocationPress: () => void;
+  onQueryChange: (query: string) => void;
+};
 
-
-export default function AppBar() {
-  const [query, setQuery] = useState('');
-
+export default function AppBar({ query, onLocationPress, onQueryChange }: AppBarProps) {
   return (
     <View style={styles.container}>
       <View style={styles.searchContainer}>
         <FaSearch style={styles.searchIcon} />
         <TextInput
           accessibilityLabel="Search for a location"
-          onChangeText={setQuery}
+          onChangeText={onQueryChange}
           placeholder="Search city"
           placeholderTextColor="#6d8580"
           returnKeyType="search"
@@ -25,7 +26,7 @@ export default function AppBar() {
       <Pressable
         accessibilityLabel="Use current location"
         accessibilityRole="button"
-        onPress={() => undefined}
+        onPress={onLocationPress}
         style={({ pressed }) => [styles.locationButton, pressed && styles.pressed]}>
         <FaLocationArrow style={styles.locationIcon} />
       </Pressable>

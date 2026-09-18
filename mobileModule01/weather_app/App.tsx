@@ -7,17 +7,28 @@ import BottomBar, { tabs } from './components/BottomBar';
 
 import './global.css';
 
-function TabContent({ tabName }: { tabName: string }) {
+function TabContent({ tabName, displayText }: { tabName: string; displayText: string }) {
   return (
     <View style={styles.content}>
-      <Text style={styles.contentText}>{tabName}</Text>
+      <Text style={styles.contentText}>
+        {tabName}
+        <br />
+        {displayText}
+      </Text>
     </View>
   );
 }
 
 export default function App() {
   const [activeTab, setActiveTab] = useState(0);
+  const [query, setQuery] = useState('');
+  const [isUsingGeolocation, setIsUsingGeolocation] = useState(false);
   const { width } = useWindowDimensions();
+
+  const handleQueryChange = (nextQuery: string) => {
+    setQuery(nextQuery);
+    setIsUsingGeolocation(false);
+  };
 
   const selectTab = (nextTab: number) => {
     setActiveTab(Math.max(0, Math.min(nextTab, tabs.length - 1)));
@@ -40,9 +51,16 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
-        <AppBar />
+        <AppBar
+          query={query}
+          onLocationPress={() => setIsUsingGeolocation(true)}
+          onQueryChange={handleQueryChange}
+        />
         <View style={styles.swipeArea} {...panResponder.panHandlers}>
-          <TabContent tabName={tabs[activeTab].name} />
+          <TabContent
+            tabName={tabs[activeTab].name}
+            displayText={isUsingGeolocation ? 'Geolocation' : query}
+          />
         </View>
         <BottomBar activeTab={activeTab} onTabPress={selectTab} />
       </SafeAreaView>
@@ -68,5 +86,6 @@ const styles = StyleSheet.create({
     color: '#183b3b',
     fontSize: 36,
     fontWeight: '700',
+    textAlign: 'center',
   },
 });
